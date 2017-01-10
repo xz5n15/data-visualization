@@ -1,15 +1,28 @@
+/**
+ * Created by Administrator on 1/10/2017.
+ */
+$(document).ready(function () {
+    multiline();
+})
+function multiline() {
+    // var margin = {
+    //     top: 20,
+    //     right: 80,
+    //     bottom: 50, //was 30
+    //     left: 50
+    //   },
+    //   width = 900 - margin.left - margin.right,
+    //   height = 500 - margin.top - margin.bottom;
 
-  // <script data-require="d3@3.5.3" data-semver="3.5.3" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.js"></script>
-    var margin = {
-        top: 20,
-        right: 80,
-        bottom: 50, //was 30
-        left: 50
-      },
-      width = 900 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
 
-    var parseDate = d3.time.format("%Y%m").parse;
+
+    var chart = d3.select("#cpi-detail");
+    var margin = {top: 20, right: 80, bottom: 50, left: 50},//改图的大小
+        width = +chart.attr("width") - margin.left - margin.right,
+        height = +chart.attr("height") - margin.top - margin.bottom,
+        svg = chart.append("g").attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+     var parseDate = d3.time.format("%Y%m").parse;
     var formatTime = d3.time.format("%Y%m");
 
     var x = d3.time.scale().range([0, width]);
@@ -30,13 +43,8 @@
       .x(function(d) {return x(d.date);})
       .y(function(d) {return y(d.price);});
 
-    var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  d3.tsv("data.tsv", function(error, data) {
+  d3.tsv("./data/data.tsv", function(error, data) {
       if (error) throw error;
       data.forEach(function (d) {
           d.date = parseDate(d.date);
@@ -93,7 +101,8 @@
               else;
           })
           .attr('y', 13)
-          .text(function (d) {return d.name;});
+          .text(function (d) {return d.name;})
+          .style("font-size",10);
 
       svg.append("g")
           .attr("class", "x axis")
@@ -192,3 +201,5 @@
                   });
           });
   });
+
+}
